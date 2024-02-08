@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import userRouter from "./routes/user.route.js";
 import authRouter from "./routes/auth.route.js";
+import cookieParser from "cookie-parser";
 const app = express();
 
 mongoose.connect("mongodb://127.0.0.1:27017/vehicle-vista");
@@ -19,6 +20,7 @@ app.listen(3000, () => {
 });
 
 app.use(express.json());
+app.use(cookieParser());
 
 app.use("/server/user", userRouter);
 app.use("/server/auth", authRouter);
