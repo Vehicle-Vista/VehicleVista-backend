@@ -30,6 +30,10 @@ const listingSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    bodyType: {
+      type: String,
+      required: true,
+    },
     imageURLs: {
       type: Array,
       required: true,
