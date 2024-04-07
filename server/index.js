@@ -4,9 +4,13 @@ import userRouter from "./routes/user.route.js";
 import authRouter from "./routes/auth.route.js";
 import listingRouter from "./routes/listing.route.js";
 import cookieParser from "cookie-parser";
+import { config } from "dotenv";
+
+config();
+
 const app = express();
 
-mongoose.connect("mongodb://127.0.0.1:27017/vehicle-vista");
+mongoose.connect(process.env.MONGO);
 
 mongoose.connection.on("connected", () => {
   console.log("MongoDB connected successfully");

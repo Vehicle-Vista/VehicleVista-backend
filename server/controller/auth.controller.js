@@ -2,6 +2,9 @@ import User from "../models/user.model.js";
 import bcryptjs from "bcryptjs";
 import { ErrorHandler } from "../utils/error.js";
 import Jwt from "jsonwebtoken";
+import { config } from "dotenv";
+
+config();
 
 export const signup = async (req, res, next) => {
   const { username, email, password } = req.body;
@@ -25,7 +28,7 @@ export const login = async (req, res, next) => {
       validUser.password
     );
     if (!validPassword) return next(ErrorHandler(401, "Invalid Credentials!"));
-    const token = Jwt.sign({ id: validUser._id }, "eqoiruvfjdaf239412");
+    const token = Jwt.sign({ id: validUser._id }, process.env.JWT_SECRET);
     const { password: pass, ...rest } = validUser._doc;
     res
       .cookie("access_token", token, { httpOnly: true })
@@ -40,7 +43,7 @@ export const googleAuth = async (req, res, next) => {
   try {
     const user = await User.findOne({ email: req.body.email });
     if (user) {
-      const token = Jwt.sign({ id: user._id }, "eqoiruvfjdaf239412");
+      const token = Jwt.sign({ id: user._id }, process.env.JWT_SECRET);
       const { password: pass, ...rest } = user._doc;
       res
         .cookie("access_token", token, { httpOnly: true })
@@ -62,7 +65,7 @@ export const googleAuth = async (req, res, next) => {
         avatar: req.body.photo,
       });
       await newUser.save();
-      const token = Jwt.sign({ id: newUser._id }, "eqoiruvfjdaf239412");
+      const token = Jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
       const { password: pass, ...rest } = newUser._doc;
       res
         .cookie("access_token", token, { httpOnly: true })
